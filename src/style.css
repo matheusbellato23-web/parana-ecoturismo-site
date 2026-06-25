@@ -1280,3 +1280,47 @@ textarea.form-control {
   }
 }
 
+/* ==========================================================================
+   TOAST NOTIFICATION (ALERTAS FLUTUANTES)
+   ========================================================================== */
+.toast-notification {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  background: var(--bg-white);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 100000;
+  transform: translateY(100px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-left: 5px solid var(--accent);
+}
+
+.toast-notification.active {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.toast-notification.error {
+  border-left-color: #e74c3c;
+}
+
+.toast-icon {
+  font-size: 1.3rem;
+}
+
+.toast-message {
+  font-family: var(--font-header);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+

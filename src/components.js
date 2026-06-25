@@ -90,6 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Inject Floating WhatsApp Button
   injectFloatingWhatsApp();
+
+  // Initialize Contact Form Submission Handler
+  initContactForm();
 });
 
 function initNavbar() {
@@ -183,5 +186,85 @@ function injectFloatingWhatsApp() {
   `;
   document.body.insertAdjacentHTML('beforeend', btnHTML);
 }
+
+function initContactForm() {
+  const form = document.getElementById('contact-us-form');
+  if (!form) return;
+
+  // Inject Toast HTML markup
+  const toastHTML = `
+    <div id="toast-alert" class="toast-notification">
+      <span id="toast-icon" class="toast-icon">✓</span>
+      <span id="toast-message" class="toast-message">Mensagem enviada com sucesso!</span>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', toastHTML);
+
+  const toast = document.getElementById('toast-alert');
+  const toastIcon = document.getElementById('toast-icon');
+  const toastMsg = document.getElementById('toast-message');
+
+  const showToast = (message, isError = false) => {
+    toastMsg.textContent = message;
+    if (isError) {
+      toast.classList.add('error');
+      toastIcon.textContent = '❌';
+    } else {
+      toast.classList.remove('error');
+      toastIcon.textContent = '✓';
+    }
+    toast.classList.add('active');
+    setTimeout(() => {
+      toast.classList.remove('active');
+    }, 5000);
+  };
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.textContent = 'Enviando...';
+    submitBtn.disabled = true;
+
+    const formData = new FormData(form);
+    const data = {
+      access_key: '28671378-bc57-427a-8261-217a652b583e',
+      name: formData.get('name'),
+      email: formData.get('email'),
+      phone: formData.get('phone'),
+      subject: formData.get('subject'),
+      message: formData.get('message')
+    };
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(async (response) => {
+      let json = await response.json();
+      if (response.status == 200) {
+        showToast('Mensagem enviada com sucesso!');
+        form.reset();
+      } else {
+        console.error(response);
+        showToast(json.message || 'Erro ao enviar a mensagem. Tente novamente.', true);
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      showToast('Erro de rede. Verifique sua conexão.', true);
+    })
+    .then(() => {
+      submitBtn.textContent = originalBtnText;
+      submitBtn.disabled = false;
+    });
+  });
+}
+
 
 
