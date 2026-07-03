@@ -1347,11 +1347,11 @@ textarea.form-control {
 .tarifa-table th, 
 .tarifa-table td {
   padding: 14px 20px;
-  border-bottom: 1px solid #eef2f2;
+  border-bottom: 1px solid #e2efee;
 }
 
 .tarifa-table th {
-  background-color: var(--primary);
+  background-color: var(--accent);
   color: var(--text-light);
   font-family: var(--font-header);
   font-weight: 600;
@@ -1365,7 +1365,7 @@ textarea.form-control {
 }
 
 .tarifa-table tr:nth-child(even) td {
-  background-color: #fdfcfb;
+  background-color: #f0faf9;
 }
 
 .tarifa-table td {
