@@ -93,6 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize Contact Form Submission Handler
   initContactForm();
+
+  // Initialize Gallery Lightbox click-to-expand
+  initLightbox();
 });
 
 function initNavbar() {
@@ -302,6 +305,116 @@ function initContactForm() {
     });
   });
 }
+
+// Initialize Lightbox Gallery on Click
+function initLightbox() {
+  // Find all images inside elements with class 'img-frame' or galleries
+  const galleryImages = Array.from(document.querySelectorAll('.img-frame img, .gallery img'));
+  if (galleryImages.length === 0) return;
+
+  // Make images look clickable and add hover effects
+  galleryImages.forEach(img => {
+    img.style.cursor = 'pointer';
+    img.style.transition = 'transform 0.3s ease, filter 0.3s ease';
+    
+    img.addEventListener('mouseenter', () => {
+      img.style.transform = 'scale(1.02)';
+      img.style.filter = 'brightness(0.95)';
+    });
+    
+    img.addEventListener('mouseleave', () => {
+      img.style.transform = 'scale(1)';
+      img.style.filter = 'brightness(1)';
+    });
+  });
+
+  // Create lightbox markup dynamically if it doesn't exist yet
+  let lightbox = document.getElementById('global-lightbox');
+  if (!lightbox) {
+    lightbox = document.createElement('div');
+    lightbox.id = 'global-lightbox';
+    lightbox.className = 'lightbox-modal';
+    lightbox.innerHTML = `
+      <div class="lightbox-content">
+        <button class="lightbox-close" aria-label="Fechar">&times;</button>
+        <button class="lightbox-prev" aria-label="Anterior">&#10094;</button>
+        <img class="lightbox-image" src="" alt="Imagem Expandida">
+        <button class="lightbox-next" aria-label="Próximo">&#10095;</button>
+      </div>
+    `;
+    document.body.appendChild(lightbox);
+  }
+
+  const lightboxImg = lightbox.querySelector('.lightbox-image');
+  const closeBtn = lightbox.querySelector('.lightbox-close');
+  const prevBtn = lightbox.querySelector('.lightbox-prev');
+  const nextBtn = lightbox.querySelector('.lightbox-next');
+  
+  let currentIndex = 0;
+
+  const showImage = (index) => {
+    if (index < 0 || index >= galleryImages.length) return;
+    currentIndex = index;
+    const clickedImg = galleryImages[index];
+    lightboxImg.src = clickedImg.src;
+    lightboxImg.alt = clickedImg.alt || 'Imagem Expandida';
+
+    // Show/hide navigation arrows based on count
+    if (galleryImages.length <= 1) {
+      prevBtn.style.display = 'none';
+      nextBtn.style.display = 'none';
+    } else {
+      prevBtn.style.display = 'block';
+      nextBtn.style.display = 'block';
+    }
+  };
+
+  galleryImages.forEach((img, idx) => {
+    img.addEventListener('click', () => {
+      showImage(idx);
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden'; // Lock background scrolling
+    });
+  });
+
+  const closeLightbox = () => {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = ''; // Restore background scrolling
+  };
+
+  closeBtn.addEventListener('click', closeLightbox);
+  
+  // Close on clicking backdrop
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target.classList.contains('lightbox-content')) {
+      closeLightbox();
+    }
+  });
+
+  // Prev / Next button actions
+  prevBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    let prevIdx = currentIndex - 1;
+    if (prevIdx < 0) prevIdx = galleryImages.length - 1;
+    showImage(prevIdx);
+  });
+
+  nextBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    let nextIdx = currentIndex + 1;
+    if (nextIdx >= galleryImages.length) nextIdx = 0;
+    showImage(nextIdx);
+  });
+
+  // Keyboard navigation support
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') prevBtn.click();
+    if (e.key === 'ArrowRight') nextBtn.click();
+  });
+}
+
 
 
 
