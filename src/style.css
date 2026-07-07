@@ -912,6 +912,7 @@ textarea.form-control {
   }
   .detail-layout {
     grid-template-columns: 1fr;
+    gap: 25px;
   }
   .footer-container {
     grid-template-columns: repeat(2, 1fr);
@@ -927,12 +928,39 @@ textarea.form-control {
     --header-height: 70px;
   }
   
+  .section {
+    padding: 50px 0;
+  }
+
   .section-title {
     font-size: 2rem;
   }
   
+  .hero {
+    min-height: 70vh;
+  }
+
   .hero-content h1 {
     font-size: 2.5rem;
+  }
+
+  .sub-hero {
+    padding: 40px 0;
+  }
+
+  .sub-hero h1 {
+    font-size: 2rem;
+  }
+
+  .contact-info-card,
+  .contact-form {
+    padding: 30px 20px;
+  }
+
+  /* Override inline double-column grids in gallery sections for responsive stack */
+  div[style*="grid-template-columns: repeat(2, 1fr)"] {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
   }
   
   /* Menu Hamburger logic */
@@ -960,13 +988,38 @@ textarea.form-control {
   
   .nav-list {
     flex-direction: column;
-    gap: 25px;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .nav-list li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 12px;
+    width: 100%;
+  }
+
+  .nav-list li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
   }
   
   .nav-link {
     color: var(--text-light) !important;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     display: block;
+    transition: all 0.3s ease;
+    padding-left: 0;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--accent) !important;
+    padding-left: 8px;
+    border-left: 3px solid var(--accent);
+  }
+  
+  .nav-link::after {
+    display: none; /* Hide bottom line effect on mobile list menu drawer */
   }
   
   .site-header.scrolled .hamburger {
@@ -1005,6 +1058,45 @@ textarea.form-control {
     padding: 10px 20px;
     font-size: 0.85rem;
   }
+  .card-aventura {
+    height: 280px;
+    padding: 20px;
+  }
+  .testimonial-card {
+    padding: 24px;
+  }
+  .specs-container {
+    padding: 16px;
+    margin: 20px 0;
+  }
+  .tarifa-table th, 
+  .tarifa-table td {
+    padding: 10px 12px;
+  }
+  .tarifa-table {
+    font-size: 0.85rem;
+  }
+}
+
+/* Backdrop overlay styling for premium mobile drawer navigation */
+.nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 999;
+}
+
+.nav-overlay.open {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* ==========================================================================
@@ -1084,8 +1176,8 @@ textarea.form-control {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  right: 0;
+  bottom: 0;
   background-color: #0b1a1a;
   z-index: 99999;
   display: flex;

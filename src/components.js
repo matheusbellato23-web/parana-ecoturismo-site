@@ -100,11 +100,48 @@ function initNavbar() {
   const navMenu = document.getElementById('nav-menu-bar');
 
   if (toggleBtn && navMenu) {
+    // Create and append backdrop overlay dynamically if it doesn't exist yet
+    let overlay = document.getElementById('nav-menu-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'nav-menu-overlay';
+      overlay.className = 'nav-overlay';
+      document.body.appendChild(overlay);
+    }
+
+    const openMenu = () => {
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      navMenu.classList.add('open');
+      toggleBtn.classList.add('active');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeMenu = () => {
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      navMenu.classList.remove('open');
+      toggleBtn.classList.remove('active');
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    };
+
     toggleBtn.addEventListener('click', () => {
-      const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
-      toggleBtn.setAttribute('aria-expanded', !expanded);
-      navMenu.classList.toggle('open');
-      toggleBtn.classList.toggle('active');
+      const isOpen = navMenu.classList.contains('open');
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    // Close menu when clicking outside (on the backdrop overlay)
+    overlay.addEventListener('click', closeMenu);
+
+    // Close menu when pressing Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navMenu.classList.contains('open')) {
+        closeMenu();
+      }
     });
   }
 
