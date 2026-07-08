@@ -870,31 +870,57 @@ textarea.form-control {
 
 .footer-social {
   margin-top: 20px;
+  display: flex;
+  gap: 12px;
 }
 
-.whatsapp-btn {
-  background-color: #25d366 !important;
-  color: #fff !important;
-  font-size: 0.9rem !important;
-  font-weight: 700 !important;
-  padding: 12px 24px !important;
-  border-radius: var(--radius-lg) !important;
-  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-  display: inline-flex;
+.social-btn-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  transition: var(--transition);
+  justify-content: center;
+  color: #fff !important;
+  font-size: 1.15rem;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
 }
 
-.whatsapp-btn::before {
-  content: '💬';
-  font-size: 1.1rem;
+.social-btn-circle:hover {
+  transform: translateY(-4px) scale(1.08);
 }
 
-.whatsapp-btn:hover {
-  background-color: #20ba59 !important;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+.whatsapp-circle-btn {
+  background-color: #25d366;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-circle-btn:hover {
+  background-color: #20ba59;
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.5);
+}
+
+.instagram-circle-btn {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  box-shadow: 0 4px 12px rgba(204, 35, 102, 0.3);
+}
+
+.instagram-circle-btn:hover {
+  box-shadow: 0 6px 18px rgba(204, 35, 102, 0.5);
+}
+
+.facebook-circle-btn {
+  background-color: #1877f2;
+  box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
+}
+
+.facebook-circle-btn:hover {
+  background-color: #166fe5;
+  box-shadow: 0 6px 18px rgba(24, 119, 242, 0.5);
 }
 
 .footer-bottom {
