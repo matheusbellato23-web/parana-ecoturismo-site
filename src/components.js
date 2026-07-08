@@ -97,6 +97,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Build premium interactive gallery at the top of detail pages
   buildPremiumGallery();
 
+  // Format list paragraphs into clean check/bullet lists
+  formatListsToBullets();
+
+  // Reposition the pricing/tariff table to the top of detail content area
+  repositionTariffTable();
+
+  // Update sidebar text to guide users to the pricing table
+  updateSidebarBookingText();
+
   // Initialize Gallery Lightbox click-to-expand
   initLightbox();
 });
@@ -525,6 +534,111 @@ function initLightbox() {
     if (e.key === 'ArrowRight') nextBtn.click();
   });
 }
+
+// Format single list paragraphs into a styled bulleted list (ul class="list-checked")
+function formatListsToBullets() {
+  const textContent = document.querySelector('.text-content');
+  if (!textContent) return;
+
+  const children = Array.from(textContent.children);
+  let activeList = null;
+  const elementsToRemove = [];
+
+  for (let i = 0; i < children.length; i++) {
+    const el = children[i];
+    
+    if (el.tagName === 'P') {
+      const text = el.textContent.trim();
+      
+      // Check if this paragraph is a list header (ends with a colon ':')
+      if (text.endsWith(':')) {
+        // Create a new ul list directly after this header
+        activeList = document.createElement('ul');
+        activeList.className = 'list-checked';
+        activeList.style.marginTop = '10px';
+        activeList.style.marginBottom = '25px';
+        activeList.style.paddingLeft = '20px';
+        
+        el.parentNode.insertBefore(activeList, el.nextSibling);
+        continue;
+      }
+      
+      // If collecting list items
+      if (activeList) {
+        const isListItem = text.endsWith(';') || text.endsWith('…') || (text.length < 100 && !text.endsWith(':') && !text.includes('<h3>'));
+        if (isListItem) {
+          const li = document.createElement('li');
+          li.textContent = text;
+          li.style.marginBottom = '8px';
+          li.style.color = 'var(--text-dark)';
+          activeList.appendChild(li);
+          elementsToRemove.push(el);
+        } else {
+          activeList = null;
+        }
+      }
+    } else if (el.tagName === 'H3' || el.tagName === 'H2' || el.classList.contains('specs-container') || el.classList.contains('table-responsive')) {
+      activeList = null;
+    }
+  }
+
+  elementsToRemove.forEach(el => el.remove());
+}
+
+// Reposition the pricing/tariff table to the top of detail content area, directly below description intro
+function repositionTariffTable() {
+  const textContent = document.querySelector('.text-content');
+  if (!textContent) return;
+
+  const tableContainer = textContent.querySelector('.table-responsive') || textContent.querySelector('.tarifa-table');
+  const headings = Array.from(textContent.querySelectorAll('h3'));
+  const tariffHeading = headings.find(h => h.textContent.toLowerCase().includes('tarifa'));
+
+  if (tableContainer && tariffHeading) {
+    const paragraphs = Array.from(textContent.querySelectorAll(':scope > p'));
+    const firstHeading = textContent.querySelector('h3');
+    
+    const introParagraphs = paragraphs.filter(p => {
+      if (firstHeading && (p.compareDocumentPosition(firstHeading) & Node.DOCUMENT_POSITION_PRECEDING)) {
+        return false;
+      }
+      const text = p.textContent.trim();
+      return !text.endsWith(';') && !text.toLowerCase().includes('serviços');
+    });
+
+    const insertAfter = introParagraphs.length > 0 ? introParagraphs[introParagraphs.length - 1] : textContent.querySelector('h2');
+    
+    if (insertAfter) {
+      const parent = insertAfter.parentNode;
+      parent.insertBefore(tariffHeading, nextSiblingElement(insertAfter));
+      parent.insertBefore(tableContainer, nextSiblingElement(tariffHeading));
+      tableContainer.style.marginBottom = '35px';
+    }
+  }
+}
+
+// Helper function to safely get the next element sibling
+function nextSiblingElement(el) {
+  let sibling = el.nextSibling;
+  while (sibling && sibling.nodeType !== 1) {
+    sibling = sibling.nextSibling;
+  }
+  return sibling;
+}
+
+// Update sidebar booking text to reference the prices table
+function updateSidebarBookingText() {
+  const sidebarBoxes = Array.from(document.querySelectorAll('.sidebar-box'));
+  const bookingBox = sidebarBoxes.find(box => box.querySelector('h3')?.textContent.includes('Reservas'));
+  if (bookingBox) {
+    const pElements = Array.from(bookingBox.querySelectorAll('p'));
+    const textParagraph = pElements.find(p => p.textContent.includes('WhatsApp'));
+    if (textParagraph) {
+      textParagraph.textContent = 'Escolha o melhor valor para o seu grupo na tabela de tarifas ao lado e agende as datas da sua aventura pelo WhatsApp.';
+    }
+  }
+}
+
 
 
 
