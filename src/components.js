@@ -94,6 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize Contact Form Submission Handler
   initContactForm();
 
+  // Build premium interactive gallery at the top of detail pages
+  buildPremiumGallery();
+
   // Initialize Gallery Lightbox click-to-expand
   initLightbox();
 });
@@ -306,27 +309,124 @@ function initContactForm() {
   });
 }
 
+// Build and Inject Premium Interactive Gallery at the Top
+function buildPremiumGallery() {
+  const detailLayout = document.querySelector('.detail-layout');
+  if (!detailLayout) return;
+
+  // Find all gallery images inside .img-frame
+  const originalFrames = Array.from(document.querySelectorAll('.text-content .img-frame'));
+  const originalImages = Array.from(document.querySelectorAll('.text-content .img-frame img'));
+  if (originalImages.length === 0) return;
+
+  // Extract sources and alts
+  const images = originalImages.map(img => ({
+    src: img.src,
+    alt: img.alt || 'Foto do Roteiro'
+  }));
+
+  // Find and remove gallery headings
+  const headings = Array.from(document.querySelectorAll('.text-content h3'));
+  const galleryHeading = headings.find(h => h.textContent.toLowerCase().includes('galeria'));
+  if (galleryHeading) {
+    galleryHeading.remove();
+  }
+
+  // Remove the old image frames
+  originalFrames.forEach(frame => frame.remove());
+
+  // Also remove the parent grid if it's left empty
+  const textContent = document.querySelector('.text-content');
+  if (textContent) {
+    const divs = Array.from(textContent.querySelectorAll('div'));
+    divs.forEach(div => {
+      if (div.children.length === 0 && div.textContent.trim() === '') {
+        div.remove();
+      }
+    });
+  }
+
+  // Create premium-gallery elements
+  const premiumGallery = document.createElement('div');
+  premiumGallery.className = 'premium-gallery';
+  
+  premiumGallery.innerHTML = `
+    <div class="gallery-main-viewer">
+      <button class="gallery-nav-btn prev-btn" aria-label="Anterior">&#10094;</button>
+      <img class="gallery-active-image" src="${images[0].src}" alt="${images[0].alt}" data-index="0">
+      <button class="gallery-nav-btn next-btn" aria-label="Próximo">&#10095;</button>
+    </div>
+    <div class="gallery-thumbnails"></div>
+  `;
+
+  const thumbnailsContainer = premiumGallery.querySelector('.gallery-thumbnails');
+  images.forEach((img, idx) => {
+    const thumb = document.createElement('div');
+    thumb.className = `gallery-thumb-item ${idx === 0 ? 'active' : ''}`;
+    thumb.innerHTML = `<img src="${img.src}" alt="Miniatura ${idx + 1}">`;
+    thumb.addEventListener('click', () => setActiveImage(idx));
+    thumbnailsContainer.appendChild(thumb);
+  });
+
+  const activeImage = premiumGallery.querySelector('.gallery-active-image');
+  const prevBtn = premiumGallery.querySelector('.prev-btn');
+  const nextBtn = premiumGallery.querySelector('.next-btn');
+
+  let currentIndex = 0;
+
+  function setActiveImage(idx) {
+    currentIndex = idx;
+    activeImage.src = images[idx].src;
+    activeImage.alt = images[idx].alt;
+    activeImage.setAttribute('data-index', idx);
+
+    // Update active class on thumbnails
+    const thumbs = Array.from(thumbnailsContainer.querySelectorAll('.gallery-thumb-item'));
+    thumbs.forEach((t, i) => {
+      if (i === idx) {
+        t.classList.add('active');
+        t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      } else {
+        t.classList.remove('active');
+      }
+    });
+  }
+
+  // Prev / Next actions
+  prevBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    let prevIdx = currentIndex - 1;
+    if (prevIdx < 0) prevIdx = images.length - 1;
+    setActiveImage(prevIdx);
+  });
+
+  nextBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    let nextIdx = currentIndex + 1;
+    if (nextIdx >= images.length) nextIdx = 0;
+    setActiveImage(nextIdx);
+  });
+
+  // Hide arrows if only 1 image
+  if (images.length <= 1) {
+    prevBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+  }
+
+  // Inject at the beginning of the container, before detailLayout
+  detailLayout.parentNode.insertBefore(premiumGallery, detailLayout);
+}
+
 // Initialize Lightbox Gallery on Click
 function initLightbox() {
-  // Find all images inside elements with class 'img-frame' or galleries
-  const galleryImages = Array.from(document.querySelectorAll('.img-frame img, .gallery img'));
-  if (galleryImages.length === 0) return;
-
-  // Make images look clickable and add hover effects
-  galleryImages.forEach(img => {
-    img.style.cursor = 'pointer';
-    img.style.transition = 'transform 0.3s ease, filter 0.3s ease';
-    
-    img.addEventListener('mouseenter', () => {
-      img.style.transform = 'scale(1.02)';
-      img.style.filter = 'brightness(0.95)';
-    });
-    
-    img.addEventListener('mouseleave', () => {
-      img.style.transform = 'scale(1)';
-      img.style.filter = 'brightness(1)';
-    });
-  });
+  const activeImg = document.querySelector('.gallery-active-image');
+  const thumbs = Array.from(document.querySelectorAll('.gallery-thumb-item img'));
+  
+  // If there's no premium gallery, check for original gallery structure
+  const originalImages = Array.from(document.querySelectorAll('.img-frame img, .gallery img'));
+  
+  const imagesList = thumbs.length > 0 ? thumbs : originalImages;
+  if (imagesList.length === 0) return;
 
   // Create lightbox markup dynamically if it doesn't exist yet
   let lightbox = document.getElementById('global-lightbox');
@@ -353,14 +453,14 @@ function initLightbox() {
   let currentIndex = 0;
 
   const showImage = (index) => {
-    if (index < 0 || index >= galleryImages.length) return;
+    if (index < 0 || index >= imagesList.length) return;
     currentIndex = index;
-    const clickedImg = galleryImages[index];
+    const clickedImg = imagesList[index];
     lightboxImg.src = clickedImg.src;
     lightboxImg.alt = clickedImg.alt || 'Imagem Expandida';
 
     // Show/hide navigation arrows based on count
-    if (galleryImages.length <= 1) {
+    if (imagesList.length <= 1) {
       prevBtn.style.display = 'none';
       nextBtn.style.display = 'none';
     } else {
@@ -369,13 +469,24 @@ function initLightbox() {
     }
   };
 
-  galleryImages.forEach((img, idx) => {
-    img.addEventListener('click', () => {
+  // If we have an active main image viewer, clicking it opens the lightbox at its current index
+  if (activeImg) {
+    activeImg.addEventListener('click', () => {
+      const idx = parseInt(activeImg.getAttribute('data-index') || '0', 10);
       showImage(idx);
       lightbox.classList.add('open');
       document.body.style.overflow = 'hidden'; // Lock background scrolling
     });
-  });
+  } else {
+    // Fallback: click directly on images in standard layout
+    imagesList.forEach((img, idx) => {
+      img.addEventListener('click', () => {
+        showImage(idx);
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+  }
 
   const closeLightbox = () => {
     lightbox.classList.remove('open');
@@ -395,14 +506,14 @@ function initLightbox() {
   prevBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     let prevIdx = currentIndex - 1;
-    if (prevIdx < 0) prevIdx = galleryImages.length - 1;
+    if (prevIdx < 0) prevIdx = imagesList.length - 1;
     showImage(prevIdx);
   });
 
   nextBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     let nextIdx = currentIndex + 1;
-    if (nextIdx >= galleryImages.length) nextIdx = 0;
+    if (nextIdx >= imagesList.length) nextIdx = 0;
     showImage(nextIdx);
   });
 
@@ -414,6 +525,7 @@ function initLightbox() {
     if (e.key === 'ArrowRight') nextBtn.click();
   });
 }
+
 
 
 
