@@ -100,8 +100,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Format list paragraphs into clean check/bullet lists
   formatListsToBullets();
 
+  // Remove duplicate services included from content (since it's in the sidebar)
+  removeDuplicateServicesFromContent();
+
   // Reposition the pricing/tariff table to the top of detail content area
   repositionTariffTable();
+
+  // Reposition specifications grid to a clean sidebar summary box
+  repositionSpecsToSidebar();
 
   // Update sidebar text to guide users to the pricing table
   updateSidebarBookingText();
@@ -637,6 +643,80 @@ function updateSidebarBookingText() {
       textParagraph.textContent = 'Escolha o melhor valor para o seu grupo na tabela de tarifas ao lado e agende as datas da sua aventura pelo WhatsApp.';
     }
   }
+}
+
+// Remove duplicate services included from content (since it's in the sidebar)
+function removeDuplicateServicesFromContent() {
+  const textContent = document.querySelector('.text-content');
+  if (!textContent) return;
+
+  const paragraphs = Array.from(textContent.querySelectorAll('p'));
+  const servicesHeader = paragraphs.find(p => {
+    const text = p.textContent.toLowerCase();
+    return text.includes('serviços incluídos') || text.includes('serviços inclusos') || text.includes('serviço incluído');
+  });
+
+  if (servicesHeader) {
+    let next = servicesHeader.nextElementSibling;
+    servicesHeader.remove();
+    if (next && (next.tagName === 'UL' || next.tagName === 'P')) {
+      next.remove();
+    }
+  }
+}
+
+// Reposition specifications grid to a clean sidebar summary box
+function repositionSpecsToSidebar() {
+  const textContent = document.querySelector('.text-content');
+  const sidebar = document.querySelector('.detail-layout > div:last-child');
+  if (!textContent || !sidebar) return;
+
+  const specsContainer = textContent.querySelector('.specs-container');
+  if (!specsContainer) return;
+
+  // Extract all spec cards
+  const cards = Array.from(specsContainer.querySelectorAll('.spec-card'));
+  if (cards.length === 0) return;
+
+  const specsList = [];
+  cards.forEach(card => {
+    const label = card.querySelector('.spec-label')?.textContent.trim();
+    const value = card.querySelector('.spec-value')?.textContent.trim();
+    if (label && value) {
+      specsList.push({ label, value });
+    }
+  });
+
+  // Create new sidebar box
+  const specsBox = document.createElement('div');
+  specsBox.className = 'sidebar-box';
+  
+  let listItemsHTML = '';
+  specsList.forEach(spec => {
+    let cleanLabel = spec.label;
+    if (cleanLabel.toLowerCase() === 'condicionamento físico') cleanLabel = 'Condicionamento';
+    if (cleanLabel.toLowerCase() === 'duração da atividade') cleanLabel = 'Duração';
+    
+    listItemsHTML += `
+      <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eef5f4; font-size: 0.88rem; align-items: flex-start; gap: 10px;">
+        <span style="font-weight: 600; color: var(--secondary); flex-shrink: 0;">${cleanLabel}</span>
+        <span style="color: var(--text-dark); text-align: right; word-break: break-word;">${spec.value}</span>
+      </li>
+    `;
+  });
+
+  specsBox.innerHTML = `
+    <h3 style="font-size: 1.25rem; margin-bottom: 15px; color: var(--secondary); border-bottom: 2px solid #eef5f4; padding-bottom: 10px;">Resumo da Atividade</h3>
+    <ul style="list-style: none; padding: 0; margin: 0;">
+      ${listItemsHTML}
+    </ul>
+  `;
+
+  // Insert at the top of the sidebar
+  sidebar.insertBefore(specsBox, sidebar.firstChild);
+
+  // Remove original specs container
+  specsContainer.remove();
 }
 
 
