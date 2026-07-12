@@ -360,18 +360,68 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 650px;
 }
 
+.hero-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #c9ffd5;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 50px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(5px);
+}
+
 .hero-content h1 {
-  font-size: 3.5rem;
-  margin-bottom: 20px;
-  line-height: 1.1;
+  font-size: 3.8rem;
+  margin-bottom: 24px;
+  line-height: 1.15;
   font-weight: 800;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+.highlight-text {
+  background: linear-gradient(120deg, #c9ffd5, #3eb489);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
 
 .hero-content p {
   font-size: 1.25rem;
-  margin-bottom: 30px;
+  line-height: 1.6;
+  margin-bottom: 36px;
+  color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  max-width: 580px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--text-light) !important;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-radius: var(--radius-sm);
+  padding: 12px 28px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.btn-outline:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
 }
 
 /* Header Spacer for Inner Pages */
@@ -1082,10 +1132,26 @@ textarea.form-control {
     grid-template-columns: 1fr;
   }
   .hero-content h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
+    line-height: 1.25;
   }
   .hero-content p {
     font-size: 1rem;
+    margin-bottom: 24px;
+  }
+  .hero-badge {
+    margin-bottom: 16px;
+    font-size: 0.72rem;
+    padding: 4px 12px;
+  }
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .hero-actions .btn {
+    text-align: center;
+    width: 100%;
   }
   .btn {
     padding: 10px 20px;
