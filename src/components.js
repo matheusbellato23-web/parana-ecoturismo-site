@@ -109,6 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Reposition specifications grid to a clean sidebar summary box
   repositionSpecsToSidebar();
 
+  // Move the services included list to the main column for a balanced layout
+  repositionServicesToMainContent();
+
   // Update sidebar text to guide users to the pricing table
   updateSidebarBookingText();
 
@@ -717,6 +720,44 @@ function repositionSpecsToSidebar() {
 
   // Remove original specs container
   specsContainer.remove();
+}
+
+// Move the "Serviços Inclusos" box from the sidebar to the main content area for a better layout
+function repositionServicesToMainContent() {
+  const textContent = document.querySelector('.text-content');
+  const sidebar = document.querySelector('.detail-layout > div:last-child');
+  if (!textContent || !sidebar) return;
+
+  const sidebarBoxes = Array.from(sidebar.querySelectorAll('.sidebar-box'));
+  const servicesBox = sidebarBoxes.find(box => {
+    const h3Text = box.querySelector('h3')?.textContent.toLowerCase() || '';
+    return h3Text.includes('serviço') || h3Text.includes('incluso');
+  });
+
+  if (servicesBox) {
+    // Find the Tariff heading or table to insert the services box right before it
+    const tarifaTable = textContent.querySelector('.table-responsive') || textContent.querySelector('.tarifa-table');
+    const headings = Array.from(textContent.querySelectorAll('h3'));
+    const tariffHeading = headings.find(h => h.textContent.toLowerCase().includes('tarifa'));
+
+    // Apply main content styling class
+    servicesBox.classList.remove('sidebar-box');
+    servicesBox.classList.add('services-main-box');
+
+    // Remove any stray list items like "Tarifas" if they exist
+    const strayTarifasLi = Array.from(servicesBox.querySelectorAll('li')).find(li => li.textContent.trim().toLowerCase() === 'tarifas');
+    if (strayTarifasLi) {
+      strayTarifasLi.remove();
+    }
+
+    if (tariffHeading) {
+      textContent.insertBefore(servicesBox, tariffHeading);
+    } else if (tarifaTable) {
+      textContent.insertBefore(servicesBox, tarifaTable);
+    } else {
+      textContent.appendChild(servicesBox);
+    }
+  }
 }
 
 
