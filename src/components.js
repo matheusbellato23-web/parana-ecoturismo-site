@@ -370,6 +370,7 @@ function buildPremiumGallery() {
   
   premiumGallery.innerHTML = `
     <div class="gallery-main-viewer">
+      <div class="gallery-blur-bg" style="background-image: url('${images[0].src}');"></div>
       <button class="gallery-nav-btn prev-btn" aria-label="Anterior">&#10094;</button>
       <img class="gallery-active-image" src="${images[0].src}" alt="${images[0].alt}" data-index="0">
       <button class="gallery-nav-btn next-btn" aria-label="Próximo">&#10095;</button>
@@ -387,6 +388,7 @@ function buildPremiumGallery() {
   });
 
   const activeImage = premiumGallery.querySelector('.gallery-active-image');
+  const blurBg = premiumGallery.querySelector('.gallery-blur-bg');
   const prevBtn = premiumGallery.querySelector('.prev-btn');
   const nextBtn = premiumGallery.querySelector('.next-btn');
 
@@ -397,6 +399,9 @@ function buildPremiumGallery() {
     activeImage.src = images[idx].src;
     activeImage.alt = images[idx].alt;
     activeImage.setAttribute('data-index', idx);
+    if (blurBg) {
+      blurBg.style.backgroundImage = `url('${images[idx].src}')`;
+    }
 
     // Update active class on thumbnails
     const thumbs = Array.from(thumbnailsContainer.querySelectorAll('.gallery-thumb-item'));
