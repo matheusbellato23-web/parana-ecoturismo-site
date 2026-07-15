@@ -16,54 +16,11 @@
   <!-- Header Spacer -->
   <div class="header-spacer"></div>
 
-  <!-- Sub Hero Carousel Section -->
-  <section class="sub-hero-carousel">
-    <div class="carousel-slides">
-      
-      <div class="carousel-slide active" style="background-image: url('assets/images/gdrive_pacotes_infantil_acampamento_mirim_img1.jpg');"></div>
-      
-      <div class="carousel-slide " style="background-image: url('assets/images/gdrive_pacotes_infantil_acampamento_mirim_img2.jpg');"></div>
-      
-      <div class="carousel-slide " style="background-image: url('assets/images/gdrive_pacotes_infantil_acampamento_mirim_img3.jpg');"></div>
-      
-      <div class="carousel-slide " style="background-image: url('assets/images/gdrive_pacotes_infantil_acampamento_mirim_img4.jpg');"></div>
-      
-      <div class="carousel-slide " style="background-image: url('assets/images/gdrive_pacotes_infantil_acampamento_mirim_img5.jpg');"></div>
-      
-      <div class="carousel-slide " style="background-image: url('assets/images/gdrive_pacotes_infantil_acampamento_mirim_img6.jpg');"></div>
-      
-      <div class="carousel-slide " style="background-image: url('assets/images/gdrive_pacotes_infantil_acampamento_mirim_img7.jpg');"></div>
-      
-      
+  <!-- Sub Hero Section -->
+  <section class="sub-hero" style="background-image: url('assets/images/gdrive_pacotes_infantil_acampamento_mirim_img1.jpg');">
+    <div class="container">
+      <h1>Acampamento Mirim</h1>
     </div>
-    
-    <div class="carousel-overlay">
-      <div class="container">
-        <h1>Acampamento Mirim</h1>
-      </div>
-    </div>
-
-    
-    <button class="carousel-control prev" onclick="moveSlide(-1)">&#10094;</button>
-    <button class="carousel-control next" onclick="moveSlide(1)">&#10095;</button>
-    <div class="carousel-dots">
-      
-      <span class="carousel-dot active" onclick="setSlide(0)"></span>
-      
-      <span class="carousel-dot " onclick="setSlide(1)"></span>
-      
-      <span class="carousel-dot " onclick="setSlide(2)"></span>
-      
-      <span class="carousel-dot " onclick="setSlide(3)"></span>
-      
-      <span class="carousel-dot " onclick="setSlide(4)"></span>
-      
-      <span class="carousel-dot " onclick="setSlide(5)"></span>
-      
-      <span class="carousel-dot " onclick="setSlide(6)"></span>
-      
-    </div>
-    
   </section>
 
   <!-- Content Section -->
@@ -130,28 +87,9 @@
             <li>Tema: Aventureiros e exploradores na floresta;</li>
           </ul>
           
-        </div>
-
-        <!-- Sidebar Info -->
-        <div>
-          <div class="sidebar-box">
-            <h3>Informações & Reservas</h3>
-            <p><strong>Destino:</strong> Paraná (Morretes, Antonina ou Serra do Mar)</p>
-            <p><strong>Logística:</strong> Cuidamos de todo o transporte, seguro e guiamento.</p>
-            <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-muted);">Entre em contato conosco pelo WhatsApp para obter valores e agendar as datas do seu grupo.</p>
-            <a href="https://api.whatsapp.com/send?phone=554196252186&text=Olá! Gostaria de saber mais sobre o roteiro de Acampamento Mirim." target="_blank" class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 20px;">Fazer Reserva</a>
-          </div>
           
-          
-          
-        </div>
-      </div>
-
-      <!-- Full-Width Sections under the column split -->
-      
-      
-          <h3 style="margin-top: 40px; margin-bottom: 20px; color: var(--secondary);">Galeria de Fotos</h3>
-          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 40px;">
+          <!-- Hidden Gallery Source for buildPremiumGallery() -->
+          <div style="display: none;">
             
             <div class="img-frame">
               <img src="assets/images/gdrive_pacotes_infantil_acampamento_mirim_img1.jpg" alt="Acampamento Mirim">
@@ -175,6 +113,25 @@
               <img src="assets/images/gdrive_pacotes_infantil_acampamento_mirim_img7.jpg" alt="Acampamento Mirim">
             </div>
           </div>
+        </div>
+
+        <!-- Sidebar Info -->
+        <div>
+          <div class="sidebar-box">
+            <h3>Informações & Reservas</h3>
+            <p><strong>Destino:</strong> Paraná (Morretes, Antonina ou Serra do Mar)</p>
+            <p><strong>Logística:</strong> Cuidamos de todo o transporte, seguro e guiamento.</p>
+            <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-muted);">Entre em contato conosco pelo WhatsApp para obter valores e agendar as datas do seu grupo.</p>
+            <a href="https://api.whatsapp.com/send?phone=554196252186&text=Olá! Gostaria de saber mais sobre o roteiro de Acampamento Mirim." target="_blank" class="btn btn-primary" style="width: 100%; text-align: center; margin-top: 20px;">Fazer Reserva</a>
+          </div>
+          
+          
+          
+        </div>
+      </div>
+
+      <!-- Full-Width Sections under the column split -->
+      
     </div>
   </section>
 
@@ -183,35 +140,5 @@
 
   <!-- Component Loading Scripts -->
   <script src="src/components.js"></script>
-  
-  <script>
-    let currentSlideIdx = 0;
-    const slides = document.querySelectorAll('.carousel-slide');
-    const dots = document.querySelectorAll('.carousel-dot');
-
-    function showSlide(idx) {
-      if (slides.length <= 1) return;
-      slides.forEach(slide => slide.classList.remove('active'));
-      dots.forEach(dot => dot.classList.remove('active'));
-      
-      currentSlideIdx = (idx + slides.length) % slides.length;
-      slides[currentSlideIdx].classList.add('active');
-      if (dots[currentSlideIdx]) dots[currentSlideIdx].classList.add('active');
-    }
-
-    function moveSlide(step) {
-      showSlide(currentSlideIdx + step);
-    }
-
-    function setSlide(idx) {
-      showSlide(idx);
-    }
-
-    if (slides.length > 1) {
-      setInterval(() => {
-        moveSlide(1);
-      }, 5000);
-    }
-  </script>
 </body>
 </html>

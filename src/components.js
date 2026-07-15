@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
   repositionSpecsToSidebar();
 
   // Move the services included list to the main column for a balanced layout
-  repositionServicesToMainContent();
+  // repositionServicesToMainContent();
 
   // Update sidebar text to guide users to the pricing table
   updateSidebarBookingText();

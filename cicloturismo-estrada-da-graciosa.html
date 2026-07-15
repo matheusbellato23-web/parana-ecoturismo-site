@@ -16,20 +16,11 @@
   <!-- Header Spacer -->
   <div class="header-spacer"></div>
 
-  <!-- Sub Hero Carousel Section -->
-  <section class="sub-hero-carousel">
-    <div class="carousel-slides">
-      
-      <div class="carousel-slide active" style="background-image: url('assets/images/backpacker-excursion-1-scaled.jpg');"></div>
+  <!-- Sub Hero Section -->
+  <section class="sub-hero" style="background-image: url('assets/images/backpacker-excursion-1-scaled.jpg');">
+    <div class="container">
+      <h1>Cicloturismo</h1>
     </div>
-    
-    <div class="carousel-overlay">
-      <div class="container">
-        <h1>Cicloturismo</h1>
-      </div>
-    </div>
-
-    
   </section>
 
   <!-- Content Section -->
@@ -42,6 +33,7 @@
           <p>A Estrada da Graciosa, no Paraná, é um dos destinos mais icônicos para o cicloturismo no Brasil. Com paisagens deslumbrantes da Serra do Mar e rica história, ela oferece experiências únicas para ciclistas de todos os níveis.</p>
           <p>A Estrada da Graciosa é um cenário ideal para viagens tranquilas, onde mistura história e beleza. O trajeto tem muitas curvas sinuosas e paralelepípedos, que cortam a serra mostrando as maravilhas da Mata Atlântica.</p>
           <p>Também como atrações são mantidas seis recantos com mirantes para admirar a bela vista, quiosques para venda de produtos típicos e estruturas de lazer com churrasqueiras e sanitários.</p>
+          
           
           
           
@@ -107,7 +99,6 @@
               </tbody>
             </table>
           </div>
-      
     </div>
   </section>
 
@@ -116,35 +107,5 @@
 
   <!-- Component Loading Scripts -->
   <script src="src/components.js"></script>
-  
-  <script>
-    let currentSlideIdx = 0;
-    const slides = document.querySelectorAll('.carousel-slide');
-    const dots = document.querySelectorAll('.carousel-dot');
-
-    function showSlide(idx) {
-      if (slides.length <= 1) return;
-      slides.forEach(slide => slide.classList.remove('active'));
-      dots.forEach(dot => dot.classList.remove('active'));
-      
-      currentSlideIdx = (idx + slides.length) % slides.length;
-      slides[currentSlideIdx].classList.add('active');
-      if (dots[currentSlideIdx]) dots[currentSlideIdx].classList.add('active');
-    }
-
-    function moveSlide(step) {
-      showSlide(currentSlideIdx + step);
-    }
-
-    function setSlide(idx) {
-      showSlide(idx);
-    }
-
-    if (slides.length > 1) {
-      setInterval(() => {
-        moveSlide(1);
-      }, 5000);
-    }
-  </script>
 </body>
 </html>
