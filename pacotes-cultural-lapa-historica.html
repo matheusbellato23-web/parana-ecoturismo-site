@@ -16,11 +16,50 @@
   <!-- Header Spacer -->
   <div class="header-spacer"></div>
 
-  <!-- Sub Hero Section -->
-  <section class="sub-hero" style="background-image: url('assets/images/gdrive_pacotes_cultural_lapa_historica_img1.jpg');">
-    <div class="container">
-      <h1>Lapa Histórica</h1>
+  <!-- Sub Hero Carousel Section -->
+  <section class="sub-hero-carousel">
+    <div class="carousel-slides">
+      
+      <div class="carousel-slide active" style="background-image: url('assets/images/gdrive_pacotes_cultural_lapa_historica_img1.jpg');"></div>
+      
+      <div class="carousel-slide " style="background-image: url('assets/images/gdrive_pacotes_cultural_lapa_historica_img2.jpeg');"></div>
+      
+      <div class="carousel-slide " style="background-image: url('assets/images/gdrive_pacotes_cultural_lapa_historica_img3.jpg');"></div>
+      
+      <div class="carousel-slide " style="background-image: url('assets/images/gdrive_pacotes_cultural_lapa_historica_img4.jpg');"></div>
+      
+      <div class="carousel-slide " style="background-image: url('assets/images/gdrive_pacotes_cultural_lapa_historica_img5.jpg');"></div>
+      
+      <div class="carousel-slide " style="background-image: url('assets/images/gdrive_pacotes_cultural_lapa_historica_img6.jpg');"></div>
+      
+      
     </div>
+    
+    <div class="carousel-overlay">
+      <div class="container">
+        <h1>Lapa Histórica</h1>
+      </div>
+    </div>
+
+    
+    <button class="carousel-control prev" onclick="moveSlide(-1)">&#10094;</button>
+    <button class="carousel-control next" onclick="moveSlide(1)">&#10095;</button>
+    <div class="carousel-dots">
+      
+      <span class="carousel-dot active" onclick="setSlide(0)"></span>
+      
+      <span class="carousel-dot " onclick="setSlide(1)"></span>
+      
+      <span class="carousel-dot " onclick="setSlide(2)"></span>
+      
+      <span class="carousel-dot " onclick="setSlide(3)"></span>
+      
+      <span class="carousel-dot " onclick="setSlide(4)"></span>
+      
+      <span class="carousel-dot " onclick="setSlide(5)"></span>
+      
+    </div>
+    
   </section>
 
   <!-- Content Section -->
@@ -135,5 +174,35 @@
 
   <!-- Component Loading Scripts -->
   <script src="src/components.js"></script>
+  
+  <script>
+    let currentSlideIdx = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.carousel-dot');
+
+    function showSlide(idx) {
+      if (slides.length <= 1) return;
+      slides.forEach(slide => slide.classList.remove('active'));
+      dots.forEach(dot => dot.classList.remove('active'));
+      
+      currentSlideIdx = (idx + slides.length) % slides.length;
+      slides[currentSlideIdx].classList.add('active');
+      if (dots[currentSlideIdx]) dots[currentSlideIdx].classList.add('active');
+    }
+
+    function moveSlide(step) {
+      showSlide(currentSlideIdx + step);
+    }
+
+    function setSlide(idx) {
+      showSlide(idx);
+    }
+
+    if (slides.length > 1) {
+      setInterval(() => {
+        moveSlide(1);
+      }, 5000);
+    }
+  </script>
 </body>
 </html>
