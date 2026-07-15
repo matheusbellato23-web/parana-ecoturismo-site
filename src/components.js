@@ -643,7 +643,12 @@ function updateSidebarBookingText() {
     const pElements = Array.from(bookingBox.querySelectorAll('p'));
     const textParagraph = pElements.find(p => p.textContent.includes('WhatsApp'));
     if (textParagraph) {
-      textParagraph.textContent = 'Escolha o melhor valor para o seu grupo na tabela de tarifas ao lado e agende as datas da sua aventura pelo WhatsApp.';
+      const hasTable = document.querySelector('.tarifa-table') !== null;
+      if (hasTable) {
+        textParagraph.textContent = 'Escolha o melhor valor para o seu grupo na tabela de tarifas ao lado e agende as datas da sua aventura pelo WhatsApp.';
+      } else {
+        textParagraph.textContent = 'Entre em contato conosco pelo WhatsApp para obter valores e agendar as datas do seu grupo.';
+      }
     }
   }
 }
