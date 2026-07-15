@@ -117,6 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize Gallery Lightbox click-to-expand
   initLightbox();
+
+  // Apply Sub-Hero Banner aspect ratio/cropping correction
+  applySubHeroCorrection();
 });
 
 function initNavbar() {
@@ -768,6 +771,49 @@ function repositionServicesToMainContent() {
       textContent.appendChild(servicesBox);
     }
   }
+}
+
+// Runtime Sub-Hero Aspect Ratio and Perspective Correction for static pages
+function applySubHeroCorrection() {
+  const subHeroes = document.querySelectorAll('.sub-hero');
+  subHeroes.forEach(hero => {
+    // Check if it already has the layered structure
+    if (hero.querySelector('.sub-hero-blur-bg')) return;
+
+    // Get background image URL from inline style
+    const bgStyle = hero.style.backgroundImage;
+    if (!bgStyle || bgStyle === 'none') return;
+
+    // Extract image URL between url('...') or url(...)
+    const match = bgStyle.match(/url\(['"]?([^'"]+)['"]?\)/);
+    if (!match) return;
+    const imgUrl = match[1];
+
+    // Clear inline background image
+    hero.style.backgroundImage = 'none';
+
+    // Create blur bg div
+    const blurBg = document.createElement('div');
+    blurBg.className = 'sub-hero-blur-bg';
+    blurBg.style.backgroundImage = `url('${imgUrl}')`;
+
+    // Create image wrapper
+    const imgWrapper = document.createElement('div');
+    imgWrapper.className = 'sub-hero-image-wrapper';
+    
+    // Find text title to set as alt
+    const title = hero.querySelector('h1')?.textContent || 'Banner';
+    const mainImg = document.createElement('img');
+    mainImg.className = 'sub-hero-main-img';
+    mainImg.src = imgUrl;
+    mainImg.alt = title;
+    
+    imgWrapper.appendChild(mainImg);
+
+    // Prepend to hero
+    hero.insertBefore(imgWrapper, hero.firstChild);
+    hero.insertBefore(blurBg, imgWrapper);
+  });
 }
 
 
