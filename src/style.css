@@ -417,8 +417,8 @@ h1, h2, h3, h4, h5, h6 {
 /* Inner Page Hero (Sub-heroes) */
 .sub-hero {
   position: relative;
-  min-height: 280px;
-  height: 280px;
+  min-height: 350px;
+  height: 350px;
   background-color: var(--primary);
   color: var(--text-light);
   display: flex;
@@ -426,7 +426,7 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
   text-align: center;
   background-size: cover;
-  background-position: center 30%; /* Shift view slightly up to capture faces/peaks */
+  background-position: center center; /* Vertically and horizontally centered by default */
   background-repeat: no-repeat;
   overflow: hidden;
   z-index: 1;
@@ -1048,8 +1048,8 @@ textarea.form-control {
   }
 
   .sub-hero {
-    min-height: 180px;
-    height: 180px;
+    min-height: 220px;
+    height: 220px;
     padding: 0;
   }
 
