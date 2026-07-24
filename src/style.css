@@ -2041,6 +2041,190 @@ textarea.form-control {
   }
 }
 
+/* ==========================================================================
+   PREMIUM NATURE & ADVENTURE AESTHETICS (Google Gemini Pro Upgrade)
+   ========================================================================== */
+
+/* Nature-themed variables & gradients */
+:root {
+  --gradient-nature: linear-gradient(135deg, #1E4D4D 0%, #18AAA0 100%);
+  --gradient-light: linear-gradient(180deg, #faf8f5 0%, #edf0ed 100%);
+  --gradient-card-overlay: linear-gradient(360deg, rgba(11, 26, 26, 0.85) 0%, rgba(11, 26, 26, 0.4) 50%, rgba(11, 26, 26, 0) 100%);
+  --organic-leaf-radius: 60% 40% 70% 30% / 40% 60% 30% 70%;
+}
+
+/* Soft Organic Nature Gradients on backgrounds */
+body {
+  background: var(--gradient-light);
+}
+
+.section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Welcoming Floating Leaf Elements (Micro-interactive background assets) */
+.section::before {
+  content: '';
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(24, 170, 160, 0.05) 0%, transparent 70%);
+  border-radius: var(--organic-leaf-radius);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.section:nth-of-type(odd)::before {
+  top: -100px;
+  right: -50px;
+  transform: rotate(45deg);
+}
+
+.section:nth-of-type(even)::before {
+  bottom: -100px;
+  left: -50px;
+  transform: rotate(-135deg);
+}
+
+/* Interactive Card Effects & Glassmorphism refinements */
+.card-aventura {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transform: translateY(0);
+}
+
+.card-aventura::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.13) 100%);
+  transform: skewX(-25deg);
+  transition: 0.75s;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.card-aventura:hover::after {
+  left: 125%;
+}
+
+.card-aventura:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(24, 170, 160, 0.3);
+}
+
+.card-content {
+  background: var(--gradient-card-overlay) !important;
+}
+
+/* Welcoming Warm CTA Buttons with Smooth Micro-animations */
+.btn {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease-out;
+  z-index: -1;
+}
+
+.btn:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.btn-primary {
+  background: var(--gradient-nature) !important;
+  box-shadow: 0 4px 15px rgba(24, 170, 160, 0.3);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 22px rgba(24, 170, 160, 0.5) !important;
+}
+
+/* Organic Image Frame Upgrades */
+.img-frame {
+  position: relative;
+  border-radius: var(--organic-leaf-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 5px solid rgba(255, 255, 255, 0.85);
+  transition: var(--transition);
+}
+
+.img-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.img-frame:hover img {
+  transform: scale(1.05);
+}
+
+/* Hero Section Split Layout Refinement */
+.hero-split {
+  background: radial-gradient(circle at 80% 20%, rgba(24, 170, 160, 0.08) 0%, transparent 60%), #faf8f5;
+  padding: 100px 0;
+}
+
+.hero-image-wrapper {
+  border-radius: var(--organic-leaf-radius);
+  border: 6px solid #ffffff;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Welcome Acknowledgment & Contact Box Upgrade */
+.sidebar-box {
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+/* Smooth page load welcoming fade-in transitions */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-text-side, .hero-image-side, .text-content, .img-frame, .card-aventura {
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-image-side { animation-delay: 0.15s; }
+.card-aventura:nth-child(2) { animation-delay: 0.1s; }
+.card-aventura:nth-child(3) { animation-delay: 0.2s; }
+
+
 
 
 
