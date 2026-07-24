@@ -2224,6 +2224,47 @@ body {
 .card-aventura:nth-child(2) { animation-delay: 0.1s; }
 .card-aventura:nth-child(3) { animation-delay: 0.2s; }
 
+/* Dynamic Falling Leaves Animation Container */
+.falling-leaves-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.falling-leaf {
+  position: absolute;
+  top: -60px;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  opacity: 0.8;
+  animation: fallAnimation linear infinite;
+  transform-origin: center;
+}
+
+@keyframes fallAnimation {
+  0% {
+    transform: translateY(0) rotate(0deg) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.75;
+  }
+  90% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateY(105vh) rotate(360deg) translateX(120px);
+    opacity: 0;
+  }
+}
+
+
 
 
 

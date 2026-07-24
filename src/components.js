@@ -770,6 +770,71 @@ function repositionServicesToMainContent() {
   }
 }
 
+// --- DYNAMIC INTERACTIVE FALLING LEAVES INJECTION ---
+function initFallingLeaves() {
+  // Only run on the hero-split page or top banner areas to avoid cluttering content
+  const targetSection = document.querySelector('.hero-split') || document.querySelector('.sub-hero');
+  if (!targetSection) return;
+
+  // Ensure relative positioning for absolute positioning of falling leaves container
+  const originalPosition = window.getComputedStyle(targetSection).position;
+  if (originalPosition === 'static') {
+    targetSection.style.position = 'relative';
+  }
+
+  // Create leaf container
+  const leafContainer = document.createElement('div');
+  leafContainer.className = 'falling-leaves-container';
+  targetSection.appendChild(leafContainer);
+
+  const leafSVGs = [
+    // Teal Leaf 1
+    `<svg viewBox="0 0 24 24" fill="#18AAA0"><path d="M17,8C8,20 2,21 2,21C2,21 3,15 15,6C17,4.5 21,3 21,3C21,3 19.5,7 17,8Z"/></svg>`,
+    // Forest Green Leaf 2
+    `<svg viewBox="0 0 24 24" fill="#1E4D4D"><path d="M2,22C2,22 3,16 12,12C21,8 22,2 22,2C22,2 16,3 12,12C8,21 2,22 2,22Z"/></svg>`,
+    // Light Leaf Accent 3
+    `<svg viewBox="0 0 24 24" fill="#88D4D0"><path d="M12,2 C17.5,7.5 22,12 22,12 C22,12 17.5,16.5 12,22 C6.5,16.5 2,12 2,12 C2,12 6.5,7.5 12,2 Z"/></svg>`
+  ];
+
+  const maxLeaves = 15;
+  for (let i = 0; i < maxLeaves; i++) {
+    createLeaf(leafContainer, leafSVGs);
+  }
+}
+
+function createLeaf(container, svgs) {
+  const leaf = document.createElement('div');
+  leaf.className = 'falling-leaf';
+  
+  // Random leaf shape
+  leaf.innerHTML = svgs[Math.floor(Math.random() * svgs.length)];
+  
+  // Random horizontal positioning, animation duration and delay
+  const startX = Math.random() * 100; // in %
+  const duration = 6 + Math.random() * 8; // 6s to 14s
+  const delay = Math.random() * -15; // start immediately spread out
+  const size = 16 + Math.random() * 20; // 16px to 36px
+  
+  leaf.style.left = `${startX}%`;
+  leaf.style.width = `${size}px`;
+  leaf.style.height = `${size}px`;
+  leaf.style.animationDuration = `${duration}s`;
+  leaf.style.animationDelay = `${delay}s`;
+  
+  container.appendChild(leaf);
+  
+  // Restart leaf position once animation finishes
+  leaf.addEventListener('animationiteration', () => {
+    leaf.style.left = `${Math.random() * 100}%`;
+  });
+}
+
+// Call on load
+document.addEventListener('DOMContentLoaded', () => {
+  initFallingLeaves();
+});
+
+
 
 
 
