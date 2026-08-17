@@ -481,7 +481,7 @@ h1, h2, h3, h4, h5, h6 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%);
+  background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0) 100%);
   z-index: 1;
   transition: var(--transition);
 }
@@ -492,7 +492,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card-aventura:hover::before {
-  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.1) 100%);
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0) 100%);
 }
 
 .card-content {
@@ -503,7 +503,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card-tag {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(30, 77, 77, 0.85);
+  backdrop-filter: blur(4px);
   color: var(--text-light);
   font-size: 0.75rem;
   font-weight: 800;
@@ -514,12 +515,14 @@ h1, h2, h3, h4, h5, h6 {
   align-self: flex-start;
   margin-bottom: 12px;
   display: inline-block;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 .card-title {
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 15px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.7);
 }
 
 .card-footer {
@@ -2123,7 +2126,7 @@ body {
 }
 
 .card-content {
-  background: var(--gradient-card-overlay) !important;
+  background: transparent !important;
 }
 
 /* Welcoming Warm CTA Buttons with Smooth Micro-animations */
@@ -2224,25 +2227,25 @@ body {
 .card-aventura:nth-child(2) { animation-delay: 0.1s; }
 .card-aventura:nth-child(3) { animation-delay: 0.2s; }
 
-/* Dynamic Falling Leaves Animation Container */
+/* Dynamic Falling Leaves Animation Container (Full Screen / Entire Page) */
 .falling-leaves-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
   overflow: hidden;
-  z-index: 1;
+  z-index: 99;
 }
 
 .falling-leaf {
   position: absolute;
   top: -60px;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   pointer-events: none;
-  opacity: 0.8;
+  opacity: 0.75;
   animation: fallAnimation linear infinite;
   transform-origin: center;
 }
@@ -2252,14 +2255,14 @@ body {
     transform: translateY(0) rotate(0deg) translateX(0);
     opacity: 0;
   }
-  10% {
-    opacity: 0.75;
+  15% {
+    opacity: 0.65;
   }
-  90% {
-    opacity: 0.75;
+  85% {
+    opacity: 0.65;
   }
   100% {
-    transform: translateY(105vh) rotate(360deg) translateX(120px);
+    transform: translateY(105vh) rotate(360deg) translateX(100px);
     opacity: 0;
   }
 }
