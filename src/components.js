@@ -290,15 +290,17 @@ function initContactForm() {
 
     const formData = new FormData(form);
     const data = {
-      access_key: '28671378-bc57-427a-8261-217a652b583e',
       name: formData.get('name'),
       email: formData.get('email'),
       phone: formData.get('phone'),
       subject: formData.get('subject'),
-      message: formData.get('message')
+      message: formData.get('message'),
+      _subject: 'Nova mensagem de contato: ' + (formData.get('subject') || 'Paraná Ecoturismo'),
+      _template: 'table',
+      _captcha: 'false'
     };
 
-    fetch('https://api.web3forms.com/submit', {
+    fetch('https://formsubmit.co/ajax/contato@paranaecoturismo.com.br', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -307,12 +309,12 @@ function initContactForm() {
       body: JSON.stringify(data)
     })
     .then(async (response) => {
-      let json = await response.json();
-      if (response.status == 200) {
-        showToast('Mensagem enviada com sucesso!');
+      let json = await response.json().catch(() => ({}));
+      if (response.ok && (json.success === 'true' || json.success === true || json.message)) {
+        showToast('Mensagem enviada com sucesso! Entraremos em contato em breve.');
         form.reset();
       } else {
-        console.error(response);
+        console.error(response, json);
         showToast(json.message || 'Erro ao enviar a mensagem. Tente novamente.', true);
       }
     })
