@@ -339,11 +339,16 @@ function buildPremiumGallery() {
   const originalImages = Array.from(document.querySelectorAll('.text-content .img-frame img'));
   if (originalImages.length === 0) return;
 
-  // Extract sources and alts
-  const images = originalImages.map(img => ({
-    src: img.src,
-    alt: img.alt || 'Foto do Roteiro'
-  }));
+  // Extract sources and alts — deduplicate by src to avoid same photo appearing twice
+  const seenSrcs = new Set();
+  const images = [];
+  originalImages.forEach(img => {
+    const src = img.src;
+    if (!seenSrcs.has(src)) {
+      seenSrcs.add(src);
+      images.push({ src, alt: img.alt || 'Foto do Roteiro' });
+    }
+  });
 
   // Find and remove gallery headings
   const headings = Array.from(document.querySelectorAll('.text-content h3'));
